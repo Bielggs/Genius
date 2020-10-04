@@ -1,28 +1,31 @@
 package br.com.view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import br.com.controller.Controller_jogo;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Menu extends JFrame {
 
 	private JPanel contentPane;
 	int nivel = 1;
+	private int id;
 	
-	Controller_jogo controlador= new Controller_jogo();;
+	
 
+
+
+	Controller_jogo controlador= new Controller_jogo();
+	Jogo partida = new Jogo();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -44,68 +47,96 @@ public class Menu extends JFrame {
 	 */
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 506, 353);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JButton btnNewButton = new JButton("Iniciar");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btn_Facil = new JButton("Facil");
+		btn_Facil.setBounds(181, 125, 97, 23);
+		btn_Facil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nivel_facil partida = new nivel_facil();
-				controlador.Escolher_nivel(nivel);
-				partida.Recebe_Controller(controlador);
-				partida.show();
-				Menu.this.dispose();
+				Iniciar(1); 
 			}
 		});
 		
-	
+		JButton btn_Medio = new JButton("M\u00E9dio");
+		btn_Medio.setBounds(181, 154, 97, 23);
+		btn_Medio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Iniciar(2); 
+			
+			}
+		});
 		
+		JButton btn_Dificil = new JButton("Dific\u00EDl");
+		btn_Dificil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Iniciar(3); 
+			}
+		});
+		btn_Dificil.setBounds(181, 183, 97, 23);
 		
-		JButton btnNewButton_1 = new JButton("New button");
+		JButton btn_Sair = new JButton("Sair");
+		btn_Sair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			Jogo j =	new Jogo();
+			controlador.Escolher_nivel(4);
+			j.Recebe_Controller(controlador);
+				j.show();
+			}
+		});
+		btn_Sair.setBounds(181, 255, 97, 23);
 		
-		JButton btnNewButton_2 = new JButton("New button");
+		JLabel lblNewLabel = new JLabel("LOGO");
+		lblNewLabel.setBounds(98, 30, 274, 77);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		JButton btnNewButton_3 = new JButton("New button");
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(148)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnNewButton_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap(187, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(35)
-					.addComponent(btnNewButton)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton_1)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton_2)
-					.addGap(49)
-					.addComponent(btnNewButton_3)
-					.addContainerGap(63, Short.MAX_VALUE))
-		);
-		contentPane.setLayout(gl_contentPane);
+		JLabel lbl_iniciar = new JLabel("Iniciar");
+		lbl_iniciar.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_iniciar.setBounds(318, 107, 148, 117);
+		contentPane.setLayout(null);
+		contentPane.add(btn_Sair);
+		contentPane.add(btn_Medio);
+		contentPane.add(btn_Facil);
+		contentPane.add(btn_Dificil);
+		contentPane.add(lblNewLabel);
+		contentPane.add(lbl_iniciar);
+		
+		JLabel lbl_Ranque = new JLabel("Ranque");
+		lbl_Ranque.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_Ranque.setBounds(382, 11, 98, 87);
+		contentPane.add(lbl_Ranque);
+		
+		JButton btn_Hard = new JButton("Hard");
+		btn_Hard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				Iniciar(4);
+			}
+		});
+		btn_Hard.setBounds(181, 217, 97, 23);
+		contentPane.add(btn_Hard);
 	}
 	
-	
-	
-	
-	
-	
-	public void CarregarSequencia() {
-		
+	public void Iniciar(int nivel) {
+		controlador.Escolher_nivel(3);
+		partida.Recebe_Controller(controlador, getId());
+		partida.show();
+		Menu.this.dispose();
 	}
 	
-	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void Receber_id(int id) {
+	this.id = id;	
+	}
 	
 	
 }
