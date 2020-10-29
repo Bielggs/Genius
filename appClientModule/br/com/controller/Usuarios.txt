@@ -1,6 +1,7 @@
-1;d;d;0
-2;f;f;0
-3;fg;fg;0
-4;ds;ds;200
-3;g;g;0
-6;v;v;0
+1;Gabriel;123;6
+2;Emily;123;8
+3;Eduardo;123;98
+4;Karen;123;20
+5;Regiane;123;6
+6;Guilherme;123;10
+7;Lucas;123;5

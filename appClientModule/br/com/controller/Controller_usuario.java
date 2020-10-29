@@ -18,9 +18,10 @@ public class Controller_usuario {
 	
 	private String caminho_txt = "/appClientModule/br/com/controller/Usuarios.txt";
 	private int id;
+ 
 
-
-	public void Salvar(String nome, String senha) {		
+	public int Salvar(String nome, String senha) {		
+		int definicao = 0;
 			if(Verificar_Nome(nome) == true){
 				
 			}else {
@@ -31,9 +32,7 @@ public class Controller_usuario {
 				user.setPontuacao(0);
 				
 				try {
-					String raiz = new File(".").getCanonicalPath();
-					String path = new File(new File(".").getCanonicalPath() + this.caminho_txt)
-							.getCanonicalPath();
+					String path = new File(new File(".").getCanonicalPath() + this.caminho_txt).getCanonicalPath();
 					FileWriter fileWriter = new FileWriter(path, true);
 					PrintWriter printWriter = new PrintWriter(fileWriter);
 					// Utilizamos o método print() para escrever na
@@ -45,15 +44,16 @@ public class Controller_usuario {
 
 					printWriter.flush();
 					printWriter.close();
+					definicao = 1;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
-	
-		// user.getNome().contains(s)
-
-		
+			}	
+			return definicao;
 	}
+	
+	
+	
 
 	public ArrayList<Usuario> Ler_arquivo() {
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
@@ -74,42 +74,34 @@ public class Controller_usuario {
 	
 	public boolean Verificar_Nome(String nome) {
 		ArrayList<Usuario> lista = Ler_arquivo();
-		boolean test = true;
-		for (int i = 0; i < lista.size(); i++) {
-			if(lista.get(i).getNome().equals(nome)){
-				 test = true;
-				 break;
-			}else {
-				 test = false;
-			}
+		Usuario usuario = lista.stream().filter(user -> user.getNome().equals(nome)).findFirst().orElse(null);
+		return usuario != null;
 		}
-			return test;
-	}
 	
-	public int Proximo_id() {
-        Path path;
+	public int Proximo_id(){
         List<String> linhas = null;
 		try {
-			path = Paths.get(new File(".").getCanonicalPath() + this.caminho_txt);
-			linhas = Files.readAllLines(path); 
+			linhas = Files.readAllLines(Paths.get(new File(".").getCanonicalPath() + this.caminho_txt));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return linhas.size() + 1;
+		if(linhas != null) {
+			return linhas.size() + 1;
+			
+		}else {
+			return 0;
+		}
 	}
 	
 	public int Verificar_Login(String nome, String senha) {
-		ArrayList<Usuario> lista = Ler_arquivo();
 		int test = 0;
-		for (int i = 0; i < lista.size(); i++) {
-			if(lista.get(i).getNome().equals(nome) && lista.get(i).getSenha().equals(senha)){
-				 test = i;
-				 setId(i);
-				 break;
-			}else {
-				 test = 0;
-			}
+		ArrayList<Usuario> lista = Ler_arquivo();
+		Usuario usuario = lista.stream().filter(user -> user.getNome().equals(nome) && user.getSenha().equals(senha)).findFirst().orElse(null);
+		if(usuario != null) {
+			test = usuario.getId();
+		}else {
+			test = 0;
 		}
 			return test;
 	}
@@ -132,10 +124,15 @@ public class Controller_usuario {
 					try {
 						path = Paths.get(new File(".").getCanonicalPath() + this.caminho_txt);
 						linhas = Files.readAllLines(path);
-						String novoConteudo = lista.get(i).getId() + ";" + lista.get(i).getNome() + ";" + lista.get(i).getSenha() + ";"+ potuacao;
-					        linhas.remove(i);
-					        linhas.add(i, novoConteudo);
-					        Files.write(path, linhas);
+						if(potuacao > lista.get(i).getPontuacao()) {
+							String novoConteudo = lista.get(i).getId() + ";" + lista.get(i).getNome() + ";" + lista.get(i).getSenha() + ";"+ potuacao;
+						        linhas.remove(i);
+						        linhas.add(i, novoConteudo);
+						        if(path != null && linhas !=null) {
+							        Files.write(path, linhas);					        	
+						        }
+						}
+						
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -152,5 +149,32 @@ public class Controller_usuario {
 			
 	}
 	
+	
+	public ArrayList<Usuario> ranque () {
+		
+		ArrayList<Usuario> lista_usuarios  = Ler_arquivo(); 
+		
+		for (int a = 0; a < lista_usuarios.size(); a++) {
+			for (int b = 0; b <= a; b++) {
+				if(lista_usuarios.get(a).getPontuacao() > lista_usuarios.get(b).getPontuacao() ) {
+					
+					Usuario u = lista_usuarios.get(a);
+					
+					lista_usuarios.remove(a);
+					lista_usuarios.add(a, lista_usuarios.get(b));
+					
+					lista_usuarios.remove(b);
+					lista_usuarios.add(b,u);
+				
+					
+				}else if (lista_usuarios.get(a).getPontuacao() == lista_usuarios.get(b).getPontuacao()){
+					
+				}
+			}
+		}
+		return lista_usuarios;
+		
+		
+	}
 
 }

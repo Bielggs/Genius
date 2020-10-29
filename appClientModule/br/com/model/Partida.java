@@ -12,6 +12,8 @@ public class Partida{
 	private int ESPERA_FOR = 3000;
 	private long PISCAR_BRANCO = 500;
 	private long PISCAR_COR = 500;
+	private int pontuacao =0;
+	private String sequencia_string = null;
 
 	
 	
@@ -20,6 +22,19 @@ public class Partida{
 	
 	
 	
+
+
+	public String getSequencia_string() {
+		return sequencia_string;
+	}
+
+
+
+	public void setSequencia_string(String sequencia_string) {
+		this.sequencia_string = sequencia_string;
+	}
+
+
 
 	public Partida() {
 	}
@@ -29,11 +44,12 @@ public class Partida{
 	public Partida(int tamanho_Array, int contador_jogadas, int tamanho_para_o_array, int tempo_espera_for, long tempo_espera_branco, long tempo_espera_cor ) {
 		this.tamanho_Array = tamanho_Array;
 		this.contador_jogadas = contador_jogadas;
-		this.sequencia_computador = new String [tamanho_para_o_array];
+		//this.sequencia_computador = new String [tamanho_para_o_array];
 		this.ESPERA_FOR = tempo_espera_for;
 		this.PISCAR_BRANCO = tempo_espera_branco;
 		this.PISCAR_COR = tempo_espera_cor;
 		this.tamanho_para_o_array = tamanho_para_o_array;
+		this.pontuacao = 0;
 	}
 	
 	public int getContador_jogadas() {
@@ -87,6 +103,15 @@ public class Partida{
 	public void setPISCAR_COR(long pISCAR_COR) {
 		PISCAR_COR = pISCAR_COR;
 	}
+
+	public int getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(int pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+
 
 
 	
